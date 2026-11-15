@@ -1,12 +1,13 @@
 package com.nxtgen.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Data;
 
 @Data
 public class NxtGenEducationUpdate {
 
     @NotNull
-    private JsonNode education;
+    private List<@Valid NxtGenEducationDetail> education;
 }

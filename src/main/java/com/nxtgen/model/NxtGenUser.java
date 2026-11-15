@@ -3,6 +3,7 @@ package com.nxtgen.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Data;
@@ -37,7 +38,7 @@ public class NxtGenUser {
 
     private OffsetDateTime updatedDate;
 
-    private String education;
+    private List<NxtGenEducationDetail> education;
 
     private String profileImage;
 

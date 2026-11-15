@@ -1,0 +1,47 @@
+package com.nxtgen.mapper;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.NullNode;
+import com.nxtgen.model.NxtGenStaticConfig;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
+
+/** Maps a NXTGEN_STATIC_CONFIG database row to the NxtGenStaticConfig domain model. */
+public class NxtGenStaticConfigDataMapper implements RowMapper<NxtGenStaticConfig> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NxtGenStaticConfigDataMapper.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    @Override
+    public NxtGenStaticConfig mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+        NxtGenStaticConfig config = new NxtGenStaticConfig();
+        config.setId(resultSet.getLong("ID"));
+        config.setConfCode(resultSet.getString("CONF_CODE"));
+        config.setConfCategory(resultSet.getString("CONF_CATEGORY"));
+        config.setStaticJson(readStaticJson(resultSet.getString("STATIC_JSON")));
+        config.setIsActive(resultSet.getString("IS_ACTIVE"));
+        return config;
+    }
+
+    /**
+     * STATIC_JSON stores arbitrary, feature-specific UI configuration as JSON text (enforced
+     * valid by a database check constraint). This deserializes it into a {@link JsonNode} so API
+     * consumers receive structured data instead of a raw JSON string; malformed content degrades
+     * to an empty object rather than failing the whole read.
+     */
+    private static JsonNode readStaticJson(String staticJsonText) {
+        if (staticJsonText == null || staticJsonText.isBlank()) {
+            return NullNode.getInstance();
+        }
+        try {
+            return OBJECT_MAPPER.readTree(staticJsonText);
+        } catch (Exception malformedJson) {
+            LOGGER.warn("Could not parse STATIC_JSON column as JSON; returning an empty object.", malformedJson);
+            return OBJECT_MAPPER.createObjectNode();
+        }
+    }
+}

@@ -2,6 +2,8 @@ package com.nxtgen.repository;
 
 import com.nxtgen.mapper.NxtGenUserDataMapper;
 import com.nxtgen.model.NxtGenUser;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -35,10 +37,17 @@ public class NxtGenUserRepository {
     }
 
     public void updateEducation(String userId, String education, String updatedBy) {
-        jdbcTemplate.update("UPDATE NXTGEN_APP_USER_MASTER SET EDUCATION = ?, UPD_BY = ?, UPD_DATE = SYSTIMESTAMP WHERE ID = ?", education, updatedBy, userId);
+        // Bound as a JDBC parameter (instead of the Oracle-only SYSTIMESTAMP
+        // SQL function) so this statement runs unchanged against any
+        // configured database, including the local SQLite profile.
+        jdbcTemplate.update(
+                "UPDATE NXTGEN_APP_USER_MASTER SET EDUCATION = ?, UPD_BY = ?, UPD_DATE = ? WHERE ID = ?",
+                education, updatedBy, Timestamp.from(Instant.now()), userId);
     }
 
     public void updateProfileImage(String userId, String profileImage, String updatedBy) {
-        jdbcTemplate.update("UPDATE NXTGEN_APP_USER_MASTER SET PROFILE_IMAGE = ?, UPD_BY = ?, UPD_DATE = SYSTIMESTAMP WHERE ID = ?", profileImage, updatedBy, userId);
+        jdbcTemplate.update(
+                "UPDATE NXTGEN_APP_USER_MASTER SET PROFILE_IMAGE = ?, UPD_BY = ?, UPD_DATE = ? WHERE ID = ?",
+                profileImage, updatedBy, Timestamp.from(Instant.now()), userId);
     }
 }

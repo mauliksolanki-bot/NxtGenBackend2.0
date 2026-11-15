@@ -31,6 +31,13 @@ public class NxtGenApiRequestLoggingFilter extends OncePerRequestFilter {
                     request.getRequestURI(),
                     response.getStatus(),
                     elapsedMilliseconds);
+        } else {
+            LOGGER.warn(
+                    "API failed: {} {} -> {} ({} ms)",
+                    request.getMethod(),
+                    request.getRequestURI(),
+                    response.getStatus(),
+                    elapsedMilliseconds);
         }
     }
 }
