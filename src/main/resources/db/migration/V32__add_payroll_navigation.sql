@@ -1,0 +1,22 @@
+INSERT INTO WF_NAVIGATION_MASTER (ID, CODE, DISPLAY_NAME, IS_ACTIVE, CRE_BY)
+SELECT NVL(MAX(ID), 0) + 1, 'PAYROLL', 'Payroll', 'Y', 'SYSTEM'
+FROM WF_NAVIGATION_MASTER
+WHERE NOT EXISTS (SELECT 1 FROM WF_NAVIGATION_MASTER WHERE CODE = 'PAYROLL');
+
+INSERT INTO WF_NAV_MENU_ACCESS (ID, NAV_ID, USR_ID, IS_ACTIVE, CRE_BY)
+SELECT
+  (SELECT NVL(MAX(access_row.ID), 0) FROM WF_NAV_MENU_ACCESS access_row)
+      + ROW_NUMBER() OVER (ORDER BY user_account.ID),
+  navigation.ID,
+  user_account.ID,
+  'Y',
+  'SYSTEM'
+FROM WF_NAVIGATION_MASTER navigation
+INNER JOIN WF_APP_USER_MASTER user_account ON user_account.IS_ACTIVE = 'Y'
+INNER JOIN WF_ROLE_MASTER role_master ON role_master.ID = user_account.PRIMARY_ROLE_ID
+WHERE navigation.CODE = 'PAYROLL'
+  AND role_master.ROLE_NAME = 'Administrator'
+  AND NOT EXISTS (
+    SELECT 1 FROM WF_NAV_MENU_ACCESS access_row
+    WHERE access_row.NAV_ID = navigation.ID AND access_row.USR_ID = user_account.ID
+  );

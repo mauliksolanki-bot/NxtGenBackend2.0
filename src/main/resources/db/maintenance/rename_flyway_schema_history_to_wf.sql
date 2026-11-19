@@ -1,0 +1,16 @@
+-- One-time deployment script. Run this while the application is stopped.
+--
+-- If the application was started before this script, it creates
+-- WF_DATABASE_SCHEMA_HISTORY and records V1 as failed because the application
+-- tables already exist. First confirm that WF_DATABASE_SCHEMA_HISTORY contains
+-- only that failed V1 attempt, then use the recovery statements below.
+--
+-- SELECT installed_rank, version, success FROM WF_DATABASE_SCHEMA_HISTORY;
+-- SELECT installed_rank, version, success FROM NXTGEN_DATABASE_SCHEMA_HISTORY;
+--
+-- Recovery for the failed-V1 state only:
+-- DROP TABLE WF_DATABASE_SCHEMA_HISTORY PURGE;
+--
+-- This script is outside db/migration because Flyway cannot rename the
+-- metadata table it is actively using during a migration.
+ALTER TABLE NXTGEN_DATABASE_SCHEMA_HISTORY RENAME TO WF_DATABASE_SCHEMA_HISTORY;
