@@ -10,22 +10,23 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class WF360NavigationRepository {
 
-    private static final String FIND_ACTIVE_BY_USER_ID = """
-            SELECT NAVIGATION.ID, NAVIGATION.CODE, NAVIGATION.DISPLAY_NAME
+  private static final String FIND_ACTIVE_BY_USER_ID =
+      """
+            SELECT NAVIGATION.ID, NAVIGATION.CODE, NAVIGATION.DISPLAY_NAME,
+                   NAVIGATION.IS_PARENT, NAVIGATION.PARENT_NAV_ID
             FROM WF_NAVIGATION_MASTER NAVIGATION
             INNER JOIN WF_NAV_MENU_ACCESS MENU_ACCESS
               ON MENU_ACCESS.NAV_ID = NAVIGATION.ID
-            WHERE MENU_ACCESS.USR_ID = ?
+            WHERE MENU_ACCESS.PRIMARY_ROLE_ID = ?
               AND MENU_ACCESS.IS_ACTIVE = 'Y'
               AND NAVIGATION.IS_ACTIVE = 'Y'
             ORDER BY NAVIGATION.DISPLAY_ORDER
             """;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    private final WF360NavigationDataMapper navigationDataMapper = new WF360NavigationDataMapper();
+  @Autowired private JdbcTemplate jdbcTemplate;
+  private final WF360NavigationDataMapper navigationDataMapper = new WF360NavigationDataMapper();
 
-    public List<WF360Navigation> findActiveByUserId(String userId) {
-        return jdbcTemplate.query(FIND_ACTIVE_BY_USER_ID, navigationDataMapper, userId);
-    }
+  public List<WF360Navigation> findActiveByPrimaryRoleId(long primaryRoleId) {
+    return jdbcTemplate.query(FIND_ACTIVE_BY_USER_ID, navigationDataMapper, primaryRoleId);
+  }
 }

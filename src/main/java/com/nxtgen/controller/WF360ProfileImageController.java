@@ -16,18 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WF360ProfileImageController {
 
-    @Autowired
-    private WF360ProfileService profileService;
+  @Autowired private WF360ProfileService profileService;
 
-    @GetMapping("/getprofileimage")
-    public ResponseEntity<WF360ProfileImage> getProfileImage(Authentication authentication) {
-        return ResponseEntity.ok(profileService.profileImage(authentication.getName()));
-    }
+  @GetMapping("/employees/me/profile-image")
+  public ResponseEntity<WF360ProfileImage> getProfileImage(Authentication authentication) {
+    return ResponseEntity.ok(profileService.profileImage(authentication.getName()));
+  }
 
-    @PutMapping("/saveprofileimage")
-    public ResponseEntity<WF360User> saveProfileImage(
-            Authentication authentication,
-            @Valid @RequestBody WF360ProfileImageUpdate update) {
-        return ResponseEntity.ok(profileService.updateProfileImage(authentication.getName(), update));
-    }
+  @PutMapping("/employees/me/profile-image")
+  public ResponseEntity<WF360User> saveProfileImage(
+      Authentication authentication, @Valid @RequestBody WF360ProfileImageUpdate update) {
+    return ResponseEntity.ok(profileService.updateProfileImage(authentication.getName(), update));
+  }
 }

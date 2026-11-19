@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 public class WF360ProfileImageUpdate {
 
-    @NotBlank private String profileImage;
+  @NotBlank private String profileImage;
 }

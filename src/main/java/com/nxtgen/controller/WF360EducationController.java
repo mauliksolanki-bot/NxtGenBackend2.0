@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WF360EducationController {
 
-    @Autowired
-    private WF360ProfileService profileService;
+  @Autowired private WF360ProfileService profileService;
 
-    @PutMapping("/saveeducationdetails")
-    public ResponseEntity<WF360User> saveEducationDetails(
-            Authentication authentication,
-            @Valid @RequestBody WF360EducationUpdate educationUpdate) {
-        return ResponseEntity.ok(profileService.updateEducation(authentication.getName(), educationUpdate));
-    }
+  @PutMapping("/employees/me/education-details")
+  public ResponseEntity<WF360User> saveEducationDetails(
+      Authentication authentication, @Valid @RequestBody WF360EducationUpdate educationUpdate) {
+    return ResponseEntity.ok(
+        profileService.updateEducation(authentication.getName(), educationUpdate));
+  }
 }

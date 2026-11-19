@@ -5,7 +5,9 @@ import lombok.Data;
 @Data
 public class WF360Navigation {
 
-    private Long id;
-    private String code;
-    private String displayName;
+  private Long id;
+  private String code;
+  private String displayName;
+  private String isParent;
+  private Long parentNavigationId;
 }

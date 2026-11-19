@@ -13,31 +13,33 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class WF360ApiRequestLoggingFilter extends OncePerRequestFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WF360ApiRequestLoggingFilter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(WF360ApiRequestLoggingFilter.class);
 
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
-        long startedAt = System.currentTimeMillis();
-        filterChain.doFilter(request, response);
-
-        long elapsedMilliseconds = System.currentTimeMillis() - startedAt;
-        if (response.getStatus() < HttpServletResponse.SC_BAD_REQUEST) {
-            LOGGER.info(
-                    "API succeeded: {} {} -> {} ({} ms)",
-                    request.getMethod(),
-                    request.getRequestURI(),
-                    response.getStatus(),
-                    elapsedMilliseconds);
-        } else {
-            LOGGER.warn(
-                    "API failed: {} {} -> {} ({} ms)",
-                    request.getMethod(),
-                    request.getRequestURI(),
-                    response.getStatus(),
-                    elapsedMilliseconds);
-        }
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    long startedAt = System.nanoTime();
+    try {
+      filterChain.doFilter(request, response);
+    } finally {
+      long elapsedMilliseconds = (System.nanoTime() - startedAt) / 1_000_000;
+      int status = response.getStatus();
+      if (status < HttpServletResponse.SC_BAD_REQUEST) {
+        LOGGER.info(
+            "http_request method={} path={} status={} duration_ms={}",
+            request.getMethod(),
+            request.getRequestURI(),
+            status,
+            elapsedMilliseconds);
+      } else {
+        LOGGER.warn(
+            "http_request method={} path={} status={} duration_ms={}",
+            request.getMethod(),
+            request.getRequestURI(),
+            status,
+            elapsedMilliseconds);
+      }
     }
+  }
 }

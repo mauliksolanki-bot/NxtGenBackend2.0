@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/navigation")
+@RequestMapping("/navigation-menu")
 public class WF360NavigationController {
 
-    @Autowired
-    private WF360NavigationService navigationService;
+  @Autowired private WF360NavigationService navigationService;
 
-    @GetMapping
-    public ResponseEntity<List<WF360Navigation>> getNavigation(Authentication authentication) {
-        return ResponseEntity.ok(navigationService.findNavigationForUser(authentication.getName()));
-    }
+  @GetMapping
+  public ResponseEntity<List<WF360Navigation>> getNavigation(Authentication authentication) {
+    return ResponseEntity.ok(navigationService.findNavigationForUser(authentication.getName()));
+  }
 }

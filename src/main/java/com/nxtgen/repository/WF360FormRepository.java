@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class WF360FormRepository {
 
-    private static final String FIND_ACTIVE_FIELDS = """
+  private static final String FIND_ACTIVE_FIELDS =
+      """
             SELECT FIELD.ID, FIELD.FIELD_CODE, FIELD.FIELD_NAME, FIELD.FIELD_TYPE, FIELD.IS_MANDATORY
             FROM WF_FORM_MASTER FORM
             INNER JOIN WF_FORM_FIELDS_MASTER FIELD ON FIELD.FORM_ID = FORM.ID
@@ -18,11 +19,10 @@ public class WF360FormRepository {
             ORDER BY FIELD.ID
             """;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    private final WF360FormFieldDataMapper mapper = new WF360FormFieldDataMapper();
+  @Autowired private JdbcTemplate jdbcTemplate;
+  private final WF360FormFieldDataMapper mapper = new WF360FormFieldDataMapper();
 
-    public List<WF360FormField> findActiveFields(String formCode) {
-        return jdbcTemplate.query(FIND_ACTIVE_FIELDS, mapper, formCode);
-    }
+  public List<WF360FormField> findActiveFields(String formCode) {
+    return jdbcTemplate.query(FIND_ACTIVE_FIELDS, mapper, formCode);
+  }
 }

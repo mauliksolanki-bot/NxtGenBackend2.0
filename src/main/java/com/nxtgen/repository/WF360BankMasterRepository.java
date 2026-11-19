@@ -11,26 +11,27 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class WF360BankMasterRepository {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+  @Autowired private JdbcTemplate jdbcTemplate;
 
-    private final WF360BankMasterDataMapper mapper = new WF360BankMasterDataMapper();
+  private final WF360BankMasterDataMapper mapper = new WF360BankMasterDataMapper();
 
-    public List<WF360BankMaster> findAllActive() {
-        return jdbcTemplate.query(
-                "SELECT ID, BANK_NAME, ACCOUNT_NUMBER_LENGTH FROM WF_BANK_MASTER WHERE IS_ACTIVE = 'Y' ORDER BY ID",
-                mapper);
-    }
+  public List<WF360BankMaster> findAllActive() {
+    return jdbcTemplate.query(
+        "SELECT ID, BANK_NAME, ACCOUNT_NUMBER_LENGTH FROM WF_BANK_MASTER WHERE IS_ACTIVE = 'Y' ORDER BY ID",
+        mapper);
+  }
 
-    public Optional<WF360BankMaster> findActiveByBankName(String bankName) {
-        return jdbcTemplate.query(
-                        """
+  public Optional<WF360BankMaster> findActiveByBankName(String bankName) {
+    return jdbcTemplate
+        .query(
+            """
                                 SELECT ID, BANK_NAME, ACCOUNT_NUMBER_LENGTH
                                 FROM WF_BANK_MASTER
                                 WHERE BANK_NAME = ? AND IS_ACTIVE = 'Y'
                                 """,
-                        mapper, bankName)
-                .stream()
-                .findFirst();
-    }
+            mapper,
+            bankName)
+        .stream()
+        .findFirst();
+  }
 }

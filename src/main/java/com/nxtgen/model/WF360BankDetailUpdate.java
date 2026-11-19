@@ -8,29 +8,30 @@ import lombok.Data;
 @Data
 public class WF360BankDetailUpdate {
 
-    @NotBlank
-    @Pattern(regexp = "^\\d{9,18}$", message = "Account number must contain 9 to 18 digits.")
-    private String accountNumber;
+  @NotBlank
+  @Pattern(regexp = "^\\d{9,18}$", message = "Account number must contain 9 to 18 digits.")
+  private String accountNumber;
 
-    @NotBlank
-    private String repeatAccountNumber;
+  @NotBlank private String repeatAccountNumber;
 
-    @NotBlank
-    @Pattern(regexp = "^[A-Z]{4}0[A-Z0-9]{6}$", message = "IFSC code must be 11 characters, for example HDFC0001234.")
-    private String ifscCode;
+  @NotBlank
+  @Pattern(
+      regexp = "^[A-Z]{4}0[A-Z0-9]{6}$",
+      message = "IFSC code must be 11 characters, for example HDFC0001234.")
+  private String ifscCode;
 
-    @NotBlank
-    private String bankName;
+  @NotBlank private String bankName;
 
-    @NotBlank
-    private String branchName;
+  @NotBlank private String branchName;
 
-    @NotBlank
-    @Pattern(regexp = "^(Salary Account|Savings Account|Current Account)$", message = "Select a valid account type.")
-    private String accountType;
+  @NotBlank
+  @Pattern(
+      regexp = "^(Salary Account|Savings Account|Current Account)$",
+      message = "Select a valid account type.")
+  private String accountType;
 
-    @AssertTrue(message = "Account numbers do not match.")
-    public boolean isAccountNumberConfirmed() {
-        return accountNumber != null && accountNumber.equals(repeatAccountNumber);
-    }
+  @AssertTrue(message = "Account numbers do not match.")
+  public boolean isAccountNumberConfirmed() {
+    return accountNumber != null && accountNumber.equals(repeatAccountNumber);
+  }
 }

@@ -23,39 +23,44 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class WF360SecurityConfig {
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+  @Bean
+  AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+      throws Exception {
+    return configuration.getAuthenticationManager();
+  }
 
-    @Bean
-    SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            WF360JwtAuthenticationFilter jwtFilter) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
-                .cors(cors -> {})
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/v1/auth/**", "/actuator/health").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+  @Bean
+  SecurityFilterChain securityFilterChain(HttpSecurity http, WF360JwtAuthenticationFilter jwtFilter)
+      throws Exception {
+    return http.csrf(csrf -> csrf.disable())
+        .cors(cors -> {})
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(
+            authorize ->
+                authorize
+                    .requestMatchers("/v1/auth/**", "/actuator/health")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
+  }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource(@Value("${app.cors-origins}") String origins) {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(origins.split(",")));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+  @Bean
+  CorsConfigurationSource corsConfigurationSource(@Value("${app.cors-origins}") String origins) {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList(origins.split(",")));
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
 }

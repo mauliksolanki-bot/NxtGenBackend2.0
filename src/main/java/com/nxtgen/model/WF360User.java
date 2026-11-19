@@ -5,56 +5,54 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
-
 import lombok.Data;
 
 @Data
 public class WF360User {
 
-    private UUID id;
+  private UUID id;
 
-    private String empId;
+  private String empId;
 
-    private String empFirstName;
+  private String empFirstName;
 
-    private String empLastName;
+  private String empLastName;
 
-    private String empEmail;
+  private String empEmail;
 
-    @JsonIgnore
-    private String hashPassword;
+  @JsonIgnore private String hashPassword;
 
-    private Long primaryRoleId;
+  private Long primaryRoleId;
 
-    private String roleName;
+  private String roleName;
 
-    private String roleLevel;
+  private String roleLevel;
 
-    private String isActive;
+  private String isActive;
 
-    private String createdBy;
+  private String createdBy;
 
-    private OffsetDateTime createdDate;
+  private OffsetDateTime createdDate;
 
-    private String updatedBy;
+  private String updatedBy;
 
-    private OffsetDateTime updatedDate;
+  private OffsetDateTime updatedDate;
 
-    private List<WF360EducationDetail> education;
+  private List<WF360EducationDetail> education;
 
-    private String profileImage;
+  private String profileImage;
 
-    private String phoneNumber;
+  private String phoneNumber;
 
-    private LocalDate dateOfJoining;
+  private LocalDate dateOfJoining;
 
-    private String workLocation;
+  private String workLocation;
 
-    private String reportingManager;
+  private String reportingManager;
 
-    private String designation;
+  private String designation;
 
-    private String panNumber;
+  private String panNumber;
 
-    private String aadharNumber;
+  private String aadharNumber;
 }

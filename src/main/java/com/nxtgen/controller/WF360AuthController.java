@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(WF360ApiPaths.AUTH)
 public class WF360AuthController {
 
-    @Autowired
-    private WF360AuthService authService;
+  @Autowired private WF360AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<WF360LoginSession> login(@Valid @RequestBody WF360LoginCredentials credentials) {
-        return ResponseEntity.ok(authService.login(credentials));
-    }
+  @PostMapping("/login")
+  public ResponseEntity<WF360LoginSession> login(
+      @Valid @RequestBody WF360LoginCredentials credentials) {
+    return ResponseEntity.ok(authService.login(credentials));
+  }
 }

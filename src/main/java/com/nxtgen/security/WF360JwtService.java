@@ -13,32 +13,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class WF360JwtService {
 
-    private final SecretKey key;
-    private final long expirationMinutes;
+  private final SecretKey key;
+  private final long expirationMinutes;
 
-    public WF360JwtService(
-            @Value("${app.jwt.secret}") String secret,
-            @Value("${app.jwt.expiration-minutes}") long expirationMinutes) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.expirationMinutes = expirationMinutes;
-    }
+  public WF360JwtService(
+      @Value("${app.jwt.secret}") String secret,
+      @Value("${app.jwt.expiration-minutes}") long expirationMinutes) {
+    this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    this.expirationMinutes = expirationMinutes;
+  }
 
-    public String create(String subject, String role) {
-        Instant now = Instant.now();
-        return Jwts.builder()
-                .subject(subject)
-                .claim("role", role)
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plusSeconds(expirationMinutes * 60)))
-                .signWith(key)
-                .compact();
-    }
+  public String create(String subject, String role) {
+    Instant now = Instant.now();
+    return Jwts.builder()
+        .subject(subject)
+        .claim("role", role)
+        .issuedAt(Date.from(now))
+        .expiration(Date.from(now.plusSeconds(expirationMinutes * 60)))
+        .signWith(key)
+        .compact();
+  }
 
-    public Claims parse(String token) {
-        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
-    }
+  public Claims parse(String token) {
+    return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+  }
 
-    public long expiresIn() {
-        return expirationMinutes * 60;
-    }
+  public long expiresIn() {
+    return expirationMinutes * 60;
+  }
 }

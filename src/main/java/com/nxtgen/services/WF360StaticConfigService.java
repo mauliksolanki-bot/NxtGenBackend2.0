@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class WF360StaticConfigService {
 
-    @Autowired
-    private WF360StaticConfigRepository staticConfigRepository;
+  @Autowired private WF360StaticConfigRepository staticConfigRepository;
 
-    public Optional<WF360StaticConfig> findActiveByCode(String confCode) {
-        return staticConfigRepository.findActiveByCode(confCode);
-    }
+  public Optional<WF360StaticConfig> findActiveByCode(String confCode) {
+    return staticConfigRepository.findActiveByCode(confCode);
+  }
 }

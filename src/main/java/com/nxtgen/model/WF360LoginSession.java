@@ -7,8 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class WF360LoginSession {
 
-    private String accessToken;
-    private String tokenType;
-    private long expiresIn;
-    private WF360User user;
+  private String accessToken;
+  private String tokenType;
+  private long expiresIn;
+  private WF360User user;
 }

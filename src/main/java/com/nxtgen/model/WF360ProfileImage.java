@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class WF360ProfileImage {
 
-    private String profileImage;
+  private String profileImage;
 }

@@ -8,6 +8,5 @@ import lombok.Data;
 @Data
 public class WF360EducationUpdate {
 
-    @NotNull
-    private List<@Valid WF360EducationDetail> education;
+  @NotNull private List<@Valid WF360EducationDetail> education;
 }

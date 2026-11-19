@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class WF360NavigationService {
 
-    @Autowired
-    private WF360UserRepository userRepository;
+  @Autowired private WF360UserRepository userRepository;
 
-    @Autowired
-    private WF360NavigationRepository navigationRepository;
+  @Autowired private WF360NavigationRepository navigationRepository;
 
-    public List<WF360Navigation> findNavigationForUser(String email) {
-        var user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+  public List<WF360Navigation> findNavigationForUser(String email) {
+    var user =
+        userRepository
+            .findByEmailIgnoreCase(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return navigationRepository.findActiveByUserId(user.getId().toString());
-    }
+    return navigationRepository.findActiveByPrimaryRoleId(user.getPrimaryRoleId());
+  }
 }

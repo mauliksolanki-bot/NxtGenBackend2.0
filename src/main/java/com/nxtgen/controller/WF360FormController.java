@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/form")
+@RequestMapping("/forms")
 public class WF360FormController {
 
-    @Autowired
-    private WF360FormRepository formRepository;
+  @Autowired private WF360FormRepository formRepository;
 
-    @GetMapping("/getformdetails")
-    public ResponseEntity<List<WF360FormField>> getFormFieldDetails(@RequestParam("formCode") String formCode) {
-        return ResponseEntity.ok(formRepository.findActiveFields(formCode));
-    }
+  @GetMapping("/details")
+  public ResponseEntity<List<WF360FormField>> getFormFieldDetails(
+      @RequestParam("formCode") String formCode) {
+    return ResponseEntity.ok(formRepository.findActiveFields(formCode));
+  }
 }

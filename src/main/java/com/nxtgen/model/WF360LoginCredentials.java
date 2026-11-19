@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WF360LoginCredentials {
 
-    @NotBlank
-    @Email
-    @Size(max = 254)
-    private String email;
+  @NotBlank
+  @Email
+  @Size(max = 254)
+  private String email;
 
-    @NotBlank
-    @Size(min = 8, max = 72)
-    private String password;
+  @NotBlank
+  @Size(min = 8, max = 72)
+  private String password;
 }
